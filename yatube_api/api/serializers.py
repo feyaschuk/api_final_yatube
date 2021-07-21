@@ -39,6 +39,18 @@ class FollowSerializer(serializers.ModelSerializer):
         fields = '__all__'
         model = Follow
 
+    def create(self, validated_data):
+        following = validated_data.pop('following')
+        user = self.context['request'].user
+        if user == following:
+            raise serializers.ValidationError("You can't sign up to yourself")
+        elif Follow.objects.filter(following=following,
+                                   user=user).exists():
+            raise serializers.ValidationError('You already signed up')        
+        else:
+            follow = Follow.objects.create(following=following, user=user)
+            return follow
+   
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

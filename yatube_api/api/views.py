@@ -48,13 +48,4 @@ class FollowViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Follow.objects.filter(user=self.request.user)
 
-    def perform_create(self, serializer):
-        current_following = serializer.validated_data["following"]
-
-        if self.request.user == current_following:
-            raise serializers.ValidationError("You can't sign up to yourself")
-        elif Follow.objects.filter(following=current_following,
-                                   user=self.request.user).exists():
-            raise serializers.ValidationError('You already signed up')
-        else:
-            serializer.save(user=self.request.user)
+    
