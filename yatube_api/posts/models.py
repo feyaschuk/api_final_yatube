@@ -3,6 +3,7 @@ from django.db import models
 
 User = get_user_model()
 
+
 class Group(models.Model):
     title = models.CharField(max_length=200, verbose_name='Имя группы')
     slug = models.SlugField(unique=True)
@@ -40,4 +41,4 @@ class Follow(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE,
                              related_name='follower')
     following = models.ForeignKey(User, on_delete=models.CASCADE,
-                               related_name='following')
+                                  related_name='following')
