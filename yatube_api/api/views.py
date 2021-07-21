@@ -1,16 +1,15 @@
 from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404
-from posts.models import Group, Post, Follow
-from rest_framework import permissions, viewsets
-from rest_framework.pagination import LimitOffsetPagination
 from django.core.exceptions import ValidationError
-
-from rest_framework import filters
+from django.http import request
+from django.shortcuts import get_object_or_404
+from posts.models import Follow, Group, Post
+from rest_framework import filters, permissions, serializers, status, viewsets
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
 
 from .permissions import IsOwnerOrReadOnly
-from .serializers import (CommentSerializer, GroupSerializer, PostSerializer, FollowSerializer
-                          )
+from .serializers import (CommentSerializer, FollowSerializer, GroupSerializer,
+                          PostSerializer)
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -47,26 +46,20 @@ class FollowViewSet(viewsets.ModelViewSet):
     serializer_class = FollowSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ['user__username', 'following__username']
-
     
     def get_queryset(self):        
         follow = Follow.objects.filter(user=self.request.user)        
         return follow
     
     def perform_create(self, serializer):
-        following = serializer.validated_data["following"] 
-        if Follow.objects.filter(user=self.request.user, following=following).exists:
-            raise ValidationError('You already signed up') 
+        current_following = serializer.validated_data["following"]         
         
-            
-              
-        if self.request.user==following:
-            raise ValidationError("You can't sign up to yourself") 
-              
-        serializer.save(user=self.request.user)
-    
-    
-
-    
-
-    
+        if self.request.user==current_following:
+            raise serializers.ValidationError("You can't sign up to yourself") 
+        elif Follow.objects.filter(
+            following=current_following, user=self.request.user).exists():
+            raise serializers.ValidationError('You already signed up')
+        else: 
+            serializer.save(user=self.request.user)
+         
+ 
