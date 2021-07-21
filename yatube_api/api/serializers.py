@@ -46,11 +46,10 @@ class FollowSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("You can't sign up to yourself")
         elif Follow.objects.filter(following=following,
                                    user=user).exists():
-            raise serializers.ValidationError('You already signed up')        
+            raise serializers.ValidationError('You already signed up')
         else:
-            follow = Follow.objects.create(following=following, user=user)
-            return follow
-   
+            return Follow.objects.create(following=following, user=user)
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
