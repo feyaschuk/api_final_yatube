@@ -10,39 +10,39 @@ api_final_yatube позволит Вам работать с базой прое
 
 Клонировать репозиторий и перейти в него в командной строке:
 
-```
+```bash
 git clone https://github.com/feyaschuk/api_final_yatube.git
 ```
 
 Cоздать и активировать виртуальное окружение:
 
-```
+```bash
 python3 -m venv env
 ```
 
-```
+```bash
 source env/bin/activate (MAC OC, Linux) // source venv/Scripts/activate (Windows)
 ```
 
-```
+```bash
 python3 -m pip install --upgrade pip
 ```
 
 Установить зависимости из файла requirements.txt:
 
-```
+```bash
 pip install -r requirements.txt
 ```
 
 Выполнить миграции:
 
-```
+```bash
 python3 manage.py migrate
 ```
 
 Запустить проект:
 
-```
+```bash
 python3 manage.py runserver
 ```
 
@@ -51,15 +51,17 @@ python3 manage.py runserver
 
 Получение списка публикаций: 
 
-```
+
 Тип запроса GET. 
+
+
+Адрес запроса: 
+```bash
+http://127.0.0.1:8000/api/v1/posts/
 ```
-```
-Адрес запроса: http://127.0.0.1:8000/api/v1/posts/
-```
-```
+
 Результат
-```
+
 ```
   [{
         "id": 1,
@@ -77,21 +79,20 @@ python3 manage.py runserver
 ```
 Создание новой публикации: 
 
-```
+
 Тип запроса POST. 
-```
-```
+
+
 Адрес запроса: http://127.0.0.1:8000/api/v1/posts/
-```
-```
+
 Тело запроса
-```
+
 ```
  "text": "First time hear today about this app. Gonna try it - then will back with feedback."
 ```
-```
+
 Результат
-```
+
 ```
  {
     "id": 16,
