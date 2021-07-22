@@ -61,8 +61,7 @@ http://127.0.0.1:8000/api/v1/posts/
 ```
 
 Результат
-
-```
+```bash
   [{
         "id": 1,
         "author": "user",
@@ -82,18 +81,18 @@ http://127.0.0.1:8000/api/v1/posts/
 
 Тип запроса POST. 
 
-
+```bash
 Адрес запроса: http://127.0.0.1:8000/api/v1/posts/
-
+```
 Тело запроса
 
-```
+```bash
  "text": "First time hear today about this app. Gonna try it - then will back with feedback."
 ```
 
 Результат
 
-```
+```bash
  {
     "id": 16,
     "author": "user",
