@@ -32,9 +32,8 @@ class GroupSerializer(serializers.ModelSerializer):
 
 class FollowSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(
-    read_only=True,default=serializers.CurrentUserDefault()
-)
-        
+        read_only=True,
+        default=serializers.CurrentUserDefault())
     following = serializers.SlugRelatedField(
         slug_field='username', queryset=User.objects.all())
 
@@ -44,15 +43,15 @@ class FollowSerializer(serializers.ModelSerializer):
         validators = [
             UniqueTogetherValidator(
                 queryset=Follow.objects.all(),
-                fields=['user', 'following'], message='You already signed up')
-                     ]
+                fields=['user', 'following'],
+                message='You already signed up')]
 
     def create(self, validated_data):
         following = validated_data.pop('following')
         user = self.context['request'].user
         if user == following:
             raise serializers.ValidationError("You can't sign up to yourself")
-        
+
         return Follow.objects.create(following=following, user=user)
 
 

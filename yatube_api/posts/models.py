@@ -1,8 +1,6 @@
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models import F, Q, constraints
-from rest_framework import serializers
+from django.db.models import F, Q
 
 User = get_user_model()
 
@@ -45,17 +43,9 @@ class Follow(models.Model):
                              related_name='follower')
     following = models.ForeignKey(User, on_delete=models.CASCADE,
                                   related_name='following')
-    
+
     class Meta:
         constraints = [
             models.CheckConstraint(
-            check=~Q(user=F('following')),
-            name='user_different_from_following')
-                
-            
-        ]
-
-
-    
-    
-        
+                check=~Q(user=F('following')),
+                name='user_different_from_following')]
